@@ -26,14 +26,14 @@ spec:
     spec:
       containers:
         - name: console-customization-plugin
-          image: quay.io/spadgett/console-customization-plugin:latest
+          image: quay.io/xiangyli/console-customization-plugin:latest
           ports:
             - containerPort: 9443
               protocol: TCP
           imagePullPolicy: Always
           volumeMounts:
             - name: plugin-serving-cert
-              readOnly: true
+              reOnly: true
               mountPath: /var/serving-cert
             - name: nginx-conf
               readOnly: true
@@ -104,14 +104,16 @@ spec:
   type: ClusterIP
   sessionAffinity: None
 ---
-apiVersion: console.openshift.io/v1alpha1
+apiVersion: console.openshift.io/v1
 kind: ConsolePlugin
 metadata:
   name: console-customization
 spec:
+  backend:
+    type: 'Service'
+    service:
+      name: console-customization-plugin
+      namespace: console-customization-plugin
+      port: 9443
+      basePath: '/'
   displayName: 'OpenShift Console Customization Plugin'
-  service:
-    name: console-customization-plugin
-    namespace: console-customization-plugin
-    port: 9443
-    basePath: '/'

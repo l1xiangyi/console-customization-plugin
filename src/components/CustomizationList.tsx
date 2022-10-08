@@ -18,6 +18,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { CustomizationResource } from '../k8s/types';
 import { referenceFor } from '../k8s/resources';
+import { useTranslation } from 'react-i18next';
 
 const resources = [
   {
@@ -152,6 +153,7 @@ const CustomizationTable = ({
 };
 
 const CustomizationList = () => {
+  const { t } = useTranslation('plugin__console-customization-plugin');
   const history = useHistory();
   const watches = resources.map(({ group, version, kind }) => {
     const [data, loaded, error] = useK8sWatchResource<CustomizationResource[]>({
@@ -183,7 +185,7 @@ const CustomizationList = () => {
   };
   return (
     <>
-      <ListPageHeader title="Customization">
+      <ListPageHeader title={t('Customization')}>
         <ListPageCreateDropdown items={createItems} onClick={onCreate}>
           Create
         </ListPageCreateDropdown>
